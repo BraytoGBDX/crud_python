@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, Enum
 from config.db import Base
-from typing import Optional
 
 import enum
 

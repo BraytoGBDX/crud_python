@@ -19,7 +19,20 @@ class UserBase(BaseModel):
         orm_mode = True
 
 class UserUpdate(UserBase):
-    pass
+    id: Optional[str] = None
+    nombre: Optional[str] = None
+    primerApellido: Optional[str] = None
+    segundoApellido: Optional[str] = None
+    tipoUsuario: Optional[str] = None
+    nombreUsuario: Optional[str] = None
+    correoElectronico: Optional[str] = None
+    contrasena: Optional[str] = None
+    numeroTelefono: Optional[str] = None
+    estatus: Optional[str] = None
+    fechaRegistro: Optional[datetime] = None
+    fechaActualizacion: Optional[datetime] = None
+    class Config:
+        orm_mode = True
 
 class User(UserBase):
     id: int
