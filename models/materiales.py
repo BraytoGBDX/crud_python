@@ -18,10 +18,12 @@ class EstadoMaterial(str, enum.Enum):
 class Material(Base):
     __tablename__ = "tbb_material"
 
-    id_material = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     tipo_material = Column(Enum(TipoMaterial), nullable=False)
     marca = Column(String(50), nullable=False)
     modelo = Column(String(50), nullable=False)
     estado = Column(Enum(EstadoMaterial), nullable=False)
+    fechaRegistro = Column(DateTime)
+    fechaActualizacion = Column(DateTime)
 
-    prestamos = relationship("Prestamo", back_populates="material")
+    prestamo = relationship("Prestamo", back_populates="material")

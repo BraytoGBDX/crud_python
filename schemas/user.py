@@ -16,7 +16,7 @@ class UserBase(BaseModel):
     fechaActualizacion: Optional[datetime] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UserUpdate(UserBase):
     id: Optional[str] = None
@@ -32,12 +32,12 @@ class UserUpdate(UserBase):
     fechaRegistro: Optional[datetime] = None
     fechaActualizacion: Optional[datetime] = None
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class User(UserBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UserCreate(UserBase):
     pass

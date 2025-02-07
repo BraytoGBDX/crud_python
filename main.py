@@ -3,9 +3,10 @@ from routes.userRoutes import user
 from routes.prestamos import prestamo
 from routes.materiales import material
 
+
 app = FastAPI(
-    tittle="Example S.A de C.V",
-    description="api de prueba para amacenar usuarios"
+    title="Example S.A de C.V",
+    description="API de prueba para almacenar usuarios"
 )
 
 app.include_router(user)

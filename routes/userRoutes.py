@@ -44,4 +44,4 @@ async def delete_user(user_id: str, db: Session = Depends(get_db)):
     deleted = UserCrud.delete_user(db=db, user_id=user_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Usuario no encontrado o no se pudo eliminar")
-    return {"message": "Usuario eliminado correctamente"}
+    return {"message": "Prestamo eliminado correctamente"}

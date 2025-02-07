@@ -8,46 +8,46 @@ from typing import List
 
 material = APIRouter()
 
-models.material.Base.metadata.create_all(bind=config.db.engine)
+models.materiales.Base.metadata.create_all(bind=config.db.engine)
 
 def get_db():
-    db = config.db.SessionLocal()
+    db = config.db.SesionLocal()
     try:
         yield db
     finally:
         db.close()
 
 # Obtener materiales
-@material.get("/materials/", response_model=List[schemas.materials.Material], tags=["Materiales"])
+@material.get("/materials/", response_model=List[schemas.materiales.Material], tags=["Materiales"])
 async def read_materials(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    db_materials = crud.materials.get_materials(db=db, skip=skip, limit=limit)
+    db_materials = crud.materiales.get_materials(db=db, skip=skip, limit=limit)
     return db_materials
 
 # Crear material
-@material.post("/materialsCreate/", response_model=schemas.materials.Material, tags=["Materiales"])
-async def create_material(material: schemas.materials.MaterialCreate, db: Session = Depends(get_db)):
-    return crud.materials.create_material(db=db, material=material)
+@material.post("/materialsCreate/", response_model=schemas.materiales.Material, tags=["Materiales"])
+async def create_material(material: schemas.materiales.MaterialCreate, db: Session = Depends(get_db)):
+    return crud.materiales.create_material(db=db, material=material)
 
 # Ver un material por ID
-@material.get("/materials/{id_material}", response_model=schemas.materials.Material, tags=["Materiales"])
+@material.get("/materials/{id_material}", response_model=schemas.materiales.Material, tags=["Materiales"])
 async def read_material(id_material: int, db: Session = Depends(get_db)):
-    db_material = crud.materials.get_material(db=db, id_material=id_material)
+    db_material = crud.materiales.get_material(db=db, id=id_material)
     if db_material is None:
         raise HTTPException(status_code=404, detail="Material no encontrado")
     return db_material
 
 # Actualizar material
-@material.put("/materialsUpdate/{id_material}", response_model=schemas.materials.Material, tags=["Materiales"])
-async def update_material(id_material: int, material: schemas.materials.MaterialUpdate, db: Session = Depends(get_db)):
-    db_material = crud.materials.update_material(db=db, id_material=id_material, material=material)
+@material.put("/materialsUpdate/{id_material}", response_model=schemas.materiales.Material, tags=["Materiales"])
+async def update_material(id_material: int, material: schemas.materiales.MaterialUpdate, db: Session = Depends(get_db)):
+    db_material = crud.materiales.update_material(db=db, id=id_material, material=material)
     if db_material is None:
         raise HTTPException(status_code=404, detail="Material no existente, no actualizado")
     return db_material
 
 # Eliminar material
-@material.delete("/materialsDelete/{id_material}", response_model=schemas.materials.Material, tags=["Materiales"])
+@material.delete("/materialsDelete/{id_material}", response_model=schemas.materiales.Material, tags=["Materiales"])
 async def delete_material(id_material: int, db: Session = Depends(get_db)):
-    db_material = crud.materials.delete_material(db=db, id_material=id_material)
+    db_material = crud.materiales.delete_material(db=db, id=id_material)
     if db_material is None:
         raise HTTPException(status_code=400, detail="Material no existente, no eliminado")
-    return db_material
+    return {"message": "Material eliminado correctamente"}

@@ -8,7 +8,7 @@ class PrestamoBase(BaseModel):
     id_usuario: int
     fecha_prestamo: datetime
     fecha_devolucion: Optional[datetime]
-    status: str  
+    estado_prestamo: str  
 
 class PrestamoCreate(PrestamoBase):
     pass
@@ -18,7 +18,7 @@ class PrestamoUpdate(PrestamoBase):
     id_usuario: Optional[int]
     fecha_prestamo: Optional[datetime]
     fecha_devolucion: Optional[datetime]
-    status: Optional[str]
+    estado_prestamo: Optional[str]
 
 class Prestamo(PrestamoBase):
     id: int

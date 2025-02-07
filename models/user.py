@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Enum
 from config.db import Base
+from sqlalchemy.orm import relationship
+
 
 import enum
 
@@ -18,7 +20,7 @@ class Estatus(str, enum.Enum):
 	Suspendido = "Suspendido"
 
 class User(Base):
-    __tablename__ = "tb_usuarios"
+    __tablename__ = "tbb_usuarios"
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(60))
@@ -32,4 +34,5 @@ class User(Base):
     estatus = Column(Enum(Estatus))
     fechaRegistro = Column(DateTime)
     fechaActualizacion = Column(DateTime)
+    prestamo = relationship("Prestamo", back_populates="usuario")
     

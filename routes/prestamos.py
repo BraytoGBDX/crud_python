@@ -11,7 +11,7 @@ prestamo = APIRouter()
 models.prestamos.Base.metadata.create_all(bind=config.db.engine)
 
 def get_db():
-    db = config.db.SessionLocal()
+    db = config.db.SesionLocal()
     try:
         yield db
     finally:
@@ -31,7 +31,7 @@ async def create_prestamo(prestamo: schemas.prestamos.PrestamoCreate, db: Sessio
 # Ver un préstamo por ID
 @prestamo.get("/prestamos/{id_prestamo}", response_model=schemas.prestamos.Prestamo, tags=["Préstamos"])
 async def read_prestamo(id_prestamo: int, db: Session = Depends(get_db)):
-    db_prestamo = crud.prestamos.get_prestamo(db=db, id_prestamo=id_prestamo)
+    db_prestamo = crud.prestamos.get_prestamo(db=db, id=id_prestamo)
     if db_prestamo is None:
         raise HTTPException(status_code=404, detail="Préstamo no encontrado")
     return db_prestamo
@@ -39,7 +39,7 @@ async def read_prestamo(id_prestamo: int, db: Session = Depends(get_db)):
 # Actualizar préstamo
 @prestamo.put("/prestamosUpdate/{id_prestamo}", response_model=schemas.prestamos.Prestamo, tags=["Préstamos"])
 async def update_prestamo(id_prestamo: int, prestamo: schemas.prestamos.PrestamoUpdate, db: Session = Depends(get_db)):
-    db_prestamo = crud.prestamos.update_prestamo(db=db, id_prestamo=id_prestamo, prestamo=prestamo)
+    db_prestamo = crud.prestamos.update_prestamo(db=db, id=id_prestamo, prestamo=prestamo)
     if db_prestamo is None:
         raise HTTPException(status_code=404, detail="Préstamo no existente, no actualizado")
     return db_prestamo
@@ -47,7 +47,7 @@ async def update_prestamo(id_prestamo: int, prestamo: schemas.prestamos.Prestamo
 # Eliminar préstamo
 @prestamo.delete("/prestamosDelete/{id_prestamo}", response_model=schemas.prestamos.Prestamo, tags=["Préstamos"])
 async def delete_prestamo(id_prestamo: int, db: Session = Depends(get_db)):
-    db_prestamo = crud.prestamos.delete_prestamo(db=db, id_prestamo=id_prestamo)
+    db_prestamo = crud.prestamos.delete_prestamo(db=db, id=id_prestamo)
     if db_prestamo is None:
         raise HTTPException(status_code=400, detail="Préstamo no existente, no eliminado")
-    return db_prestamo
+    return {"message": "Usuario eliminado correctamente"}

@@ -5,22 +5,22 @@ from typing import Optional
 
 class MaterialBase(BaseModel):
     tipo_material: str
-    marca: Optional[str]
-    modelo: Optional[str]
+    marca: Optional[str] = None
+    modelo: Optional[str] = None
     estado: EstadoMaterial
 
 class MaterialCreate(MaterialBase):
     pass
 
 class MaterialUpdate(MaterialBase):
-    nombre: Optional[str]
-    descripcion: Optional[str]
-    cantidad: Optional[int]
+    nombre: Optional[str] = None
+    descripcion: Optional[str] = None
+    cantidad: Optional[int] = None
 
 class Material(MaterialBase):
     id: int
-    fechaRegistro: datetime
-    fechaActualizacion: datetime
+    fechaRegistro: Optional[datetime] = None
+    fechaActualizacion: Optional[datetime] = None
 
     class Config:
         from_attributes = True
