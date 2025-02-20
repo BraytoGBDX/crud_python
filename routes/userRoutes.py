@@ -2,9 +2,15 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 import crud.user as UserCrud
 import config.db
-from schemas.user import User, UserCreate, UserUpdate
+from schemas.user import User, UserCreate, UserUpdate, UserLogin, Token
 import models.user
 from typing import List
+
+from datetime import datetime, timedelta
+from jose import JWTError, jwt
+from fastapi.security import OAuth2PasswordBearer
+
+
 
 user = APIRouter()
 
@@ -45,3 +51,28 @@ async def delete_user(user_id: str, db: Session = Depends(get_db)):
     if not deleted:
         raise HTTPException(status_code=404, detail="Usuario no encontrado o no se pudo eliminar")
     return {"message": "Prestamo eliminado correctamente"}
+
+
+SECRET_KEY = "secret_key_123"  # Cambia esto por una clave segura
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=15))
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+@user.post("/users/login", response_model=Token, tags=["Usuarios"])
+async def login_for_access_token(user: UserLogin, db: Session = Depends(get_db)):
+    user_db = UserCrud.get_user_by_email(db, email=user.correoElectronico)
+    if not user_db or user_db.contrasena != user.contrasena:
+        raise HTTPException(status_code=400, detail="Correo o contraseña incorrectos")
+    access_token = create_access_token(data={"sub": user_db.correoElectronico})
+    print("Token generado:", access_token)
+    return {"message": "Bienvenido al sistema"}
+
+

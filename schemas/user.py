@@ -43,4 +43,9 @@ class UserCreate(UserBase):
     pass
     
 
-        
+class UserLogin(BaseModel):
+    correoElectronico: str
+    contrasena: str
+
+class Token(BaseModel):
+    message: str

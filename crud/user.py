@@ -45,3 +45,6 @@ def delete_user(db: Session, user_id: str):
     db.delete(db_user)
     db.commit()
     return True
+
+def get_user_by_email(db: Session, email: str):
+    return db.query(UserModel).filter(UserModel.correoElectronico == email).first()
