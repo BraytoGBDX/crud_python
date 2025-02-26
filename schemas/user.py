@@ -48,4 +48,5 @@ class UserLogin(BaseModel):
     contrasena: str
 
 class Token(BaseModel):
-    message: str
+    access_token: str
+    token_type: str

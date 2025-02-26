@@ -5,8 +5,9 @@ import crud.materiales
 import schemas.materiales
 import models.materiales
 from typing import List
+from routes.userRoutes import verify_token_simple
 
-material = APIRouter()
+material = APIRouter(dependencies=[Depends(verify_token_simple)])
 
 models.materiales.Base.metadata.create_all(bind=config.db.engine)
 

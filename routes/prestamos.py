@@ -5,8 +5,10 @@ import crud.prestamos
 import schemas.prestamos
 import models.prestamos
 from typing import List
+from routes.userRoutes import verify_token_simple
 
-prestamo = APIRouter()
+prestamo = APIRouter(dependencies=[Depends(verify_token_simple)]) 
+
 
 models.prestamos.Base.metadata.create_all(bind=config.db.engine)
 
