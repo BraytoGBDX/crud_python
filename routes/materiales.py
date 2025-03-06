@@ -46,8 +46,10 @@ async def update_material(id_material: int, material: schemas.materiales.Materia
     return db_material
 
 # Eliminar material
-@material.delete("/materialsDelete/{id_material}", response_model=schemas.materiales.Material, tags=["Materiales"])
+@material.delete("/materialsDelete/{id_material}", tags=["Materiales"])
 async def delete_material(id_material: int, db: Session = Depends(get_db)):
     db_material = crud.materiales.delete_material(db=db, id=id_material)
-    if db_material is None:
+    if not db_material:
         raise HTTPException(status_code=400, detail="Material no existente, no eliminado")
+    return {"message": "Prestamo eliminado correctamente"}
+

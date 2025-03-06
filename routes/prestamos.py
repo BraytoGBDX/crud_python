@@ -47,8 +47,9 @@ async def update_prestamo(id_prestamo: int, prestamo: schemas.prestamos.Prestamo
     return db_prestamo
 
 # Eliminar préstamo
-@prestamo.delete("/prestamosDelete/{id_prestamo}", response_model=schemas.prestamos.Prestamo, tags=["Préstamos"])
-async def delete_prestamo(id_prestamo: int, db: Session = Depends(get_db)):
+@prestamo.delete("/prestamosDelete/{id_prestamo}", tags=["Préstamos"])
+async def delete_prestamo(id_prestamo: str, db: Session = Depends(get_db)):
     db_prestamo = crud.prestamos.delete_prestamo(db=db, id=id_prestamo)
-    if db_prestamo is None:
+    if not db_prestamo:
         raise HTTPException(status_code=400, detail="Préstamo no existente, no eliminado")
+    return {"message": "Prestamo eliminado correctamente"}
