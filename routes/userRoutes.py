@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 import crud.user as UserCrud
@@ -10,11 +11,11 @@ from jose import JWTError, jwt
 
 user = APIRouter()
 
-SECRET_KEY = "braytogbdx"
+SECRET_KEY = "secret"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login") 
+bearer_scheme = HTTPBearer()
 
 def get_db():
     db = config.db.SesionLocal()
@@ -23,7 +24,8 @@ def get_db():
     finally:
         db.close()
 
-def verify_token_simple(token: str = Depends(oauth2_scheme)):  
+def verify_token_simple(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
+    token = credentials.credentials
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -64,7 +66,7 @@ async def get_user(user_id: str, db: Session = Depends(get_db), user_email: str 
     return user
 
 @user.post("/usersCreate/", response_model=User, tags=["Usuarios"])
-async def create_user(user: UserCreate, db: Session = Depends(get_db), user_email: str = Depends(verify_token_simple)):  
+async def create_user(user: UserCreate, db: Session = Depends(get_db)):  
     return UserCrud.create_user(db=db, user=user)
 
 @user.put("/usersUpdate/{user_id}", response_model=User, tags=["Usuarios"])
