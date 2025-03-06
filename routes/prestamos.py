@@ -52,4 +52,3 @@ async def delete_prestamo(id_prestamo: int, db: Session = Depends(get_db)):
     db_prestamo = crud.prestamos.delete_prestamo(db=db, id=id_prestamo)
     if db_prestamo is None:
         raise HTTPException(status_code=400, detail="Préstamo no existente, no eliminado")
-    return {"message": "Usuario eliminado correctamente"}

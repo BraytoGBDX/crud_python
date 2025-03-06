@@ -12,14 +12,11 @@ class UserBase(BaseModel):
     contrasena: str
     numeroTelefono: str
     estatus: str
-    fechaRegistro: Optional[datetime] = None
-    fechaActualizacion: Optional[datetime] = None
     
     class Config:
         from_attributes = True
 
 class UserUpdate(UserBase):
-    id: Optional[str] = None
     nombre: Optional[str] = None
     primerApellido: Optional[str] = None
     segundoApellido: Optional[str] = None
@@ -29,8 +26,6 @@ class UserUpdate(UserBase):
     contrasena: Optional[str] = None
     numeroTelefono: Optional[str] = None
     estatus: Optional[str] = None
-    fechaRegistro: Optional[datetime] = None
-    fechaActualizacion: Optional[datetime] = None
     class Config:
         from_attributes = True
 

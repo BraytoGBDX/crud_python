@@ -19,9 +19,7 @@ def create_user(db: Session, user: UserCreate):
         correoElectronico=user.correoElectronico,
         contrasena=user.contrasena,  
         numeroTelefono=user.numeroTelefono,
-        estatus=user.estatus,
-        fechaRegistro=user.fechaRegistro or datetime.utcnow(),  # Asigna la fecha actual si no se pasa
-        fechaActualizacion=user.fechaActualizacion or datetime.utcnow(),
+        estatus=user.estatus
     )
     db.add(db_user)
     db.commit()

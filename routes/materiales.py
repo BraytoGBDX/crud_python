@@ -51,4 +51,3 @@ async def delete_material(id_material: int, db: Session = Depends(get_db)):
     db_material = crud.materiales.delete_material(db=db, id=id_material)
     if db_material is None:
         raise HTTPException(status_code=400, detail="Material no existente, no eliminado")
-    return {"message": "Material eliminado correctamente"}
